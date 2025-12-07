@@ -2,16 +2,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>SAU</title>
+<title>Sistema Aquífero Urucuia</title>
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <base target="_blank">
 <link rel="stylesheet" type="text/css" href="./Qgis2threejs.css">
+<style type="text/css">
+#popup, #header, #layerpanel {
+  left: 36px;
+}
+</style>
 <script src="./threejs/three.min.js"></script>
 <script src="./threejs/OrbitControls.js"></script>
 <script src="./threejs/ViewHelper.js"></script>
 <script src="./Qgis2threejs.js"></script>
-<script src="./dat-gui/dat.gui.min.js"></script>
-<script src="./dat-gui_panel.js"></script>
 </head>
 <body>
 <div id="view">
@@ -72,10 +75,9 @@
       </table>
 
       <h1>About</h1>
-      <div id="about">
+      <div id="about"><img src="./Qgis2threejs.png">
         This page was made with <a href="https://www.qgis.org/">QGIS</a> and <a href="https://github.com/minorua/Qgis2threejs">Qgis2threejs</a> plugin (version 2.8).
-        <div>Powered by <a href="https://threejs.org/">three.js</a>,
-        <a href="https://code.google.com/p/dat-gui/">dat-gui</a>
+        <div>Powered by <a href="https://threejs.org/">three.js</a>
         <span id="lib_proj4js"> and <a href="https://trac.osgeo.org/proj4js/">Proj4js</a></span>.</div>
       </div>
     </div>
@@ -85,9 +87,21 @@
 <!-- progress bar -->
 <div id="progress"><div id="progressbar"></div></div>
 
+<!-- menu -->
+<div id="toolbtns">
+  <div id="layerbtn"></div>
+  <div id="animbtn" class="hidden"></div>
+  <div id="infobtn"></div>
+</div>
+
 <!-- header and footer -->
-<div id="header"></div>
-<div id="footer"></div>
+<div id="header">Sistema Aquífero Urucuia</div>
+<div id="footer">Autor: Rosa (2023)</div>
+
+<!-- layer panel -->
+<div id="layerpanel">
+  <div id="layerlist"></div>
+</div>
 
 <!-- animation -->
 <div id="narrativebox" class="ef1">
@@ -98,30 +112,25 @@
 </div>
 
 <script>
+Q3D.Config.allVisible = true;
+Q3D.Config.viewpoint = {lookAt:{x:449648.41283682873,y:8516785.645328168,z:640.6931762695312},pos:{x:295187.0583654599,y:7879882.759207251,z:35122.81936270227}};
 Q3D.Config.localMode = true;
+Q3D.Config.northArrow.enabled = true;
+Q3D.Config.northArrow.color = 0x666666;
 
 var container = document.getElementById("view"),
     app = Q3D.application,
     gui = Q3D.gui;
 
-app.init(container);    // initialize viewer
+app.init(container);       // initialize viewer
 
 // load the scene
 app.loadSceneFile("./data/index/scene.js", function (scene) {
   // scene file has been loaded
   app.start();
-
-  gui.dat.initLayersFolder(scene);
-
 }, function (scene) {
   // all relevant files have been loaded
 
-  if (Q3D.Config.gui.customPlane) {
-    // specify preferred values. If not specified, z range of scene bounding box is used.
-    var zMin = undefined,
-        zMax = undefined;
-    gui.dat.initCustomPlaneFolder(zMin, zMax);
-  }
 });
 </script>
 </body>
